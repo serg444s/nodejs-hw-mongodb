@@ -3,6 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import { getAllContacts, getContactById } from './services/contacts.js';
+import mongoose from 'mongoose';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -20,6 +21,12 @@ export const setupServer = () => {
     }),
   );
 
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'Hello World!',
+    });
+  });
+
   app.get('/contacts', async (req, res) => {
     const contacts = await getAllContacts();
 
@@ -30,17 +37,14 @@ export const setupServer = () => {
 
   app.get('/contacts/:contactId', async (req, res) => {
     const { contactId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(contactId)) {
+      res.status(200).json({
+        data: contact,
+      });
+    }
+
     const contact = await getContactById(contactId);
-
-    res.status(200).json({
-      data: contact,
-    });
-  });
-
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello World!',
-    });
   });
 
   app.use('*', (req, res, next) => {
