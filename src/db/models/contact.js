@@ -18,11 +18,6 @@ const contactSchema = new Schema(
       type: Number,
       required: true,
     },
-    onDuty: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
     contactType: {
       type: String,
       required: true,
