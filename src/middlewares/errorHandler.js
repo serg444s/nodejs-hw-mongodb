@@ -5,7 +5,7 @@ export const errorHandler = (err, req, res, next) => {
     res.status(err.status).json({
       status: err.status,
       message: 'Something went wrong',
-      data: err,
+      data: { message: 'Contact not found' },
     });
     return;
   }
