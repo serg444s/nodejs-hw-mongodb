@@ -14,9 +14,9 @@ const contactSchema = new Schema(
       type: String,
       required: false,
     },
-    avgMark: {
-      type: Number,
-      required: true,
+    isFavourite: {
+      type: Boolean,
+      required: false,
     },
     contactType: {
       type: String,
