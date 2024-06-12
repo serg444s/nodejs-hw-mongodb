@@ -35,26 +35,29 @@ export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
-    return res.status(404).json({
+    return res.json({
       status: 404,
-      message: `Contact with id ${contactId} not found`,
+      message: `Invalid contact ID: ${contactId}`,
     });
   }
+  try {
+    const contact = await getContactById(contactId);
 
-  const contact = await getContactById(contactId);
-
-  if (!contact) {
-    next(createHttpError(404, `Contact with id ${contactId} not found`));
-    return;
+    if (!contact) {
+      next(createHttpError(404, `Contact with id ${contactId} not found`));
+      return;
+    }
+    res.status(200).json({
+      status: 200,
+      message: `Successfully found contact with id ${contactId}!`,
+      data: contact,
+    });
+  } catch (err) {
+    next(err);
   }
-  res.status(200).json({
-    status: 200,
-    message: `Successfully found contact with id ${contactId}!`,
-    data: contact,
-  });
 };
 
-export const createContactController = async (req, res) => {
+export const createContactController = async (req, res, next) => {
   const contact = await createContact(req.body);
 
   res.status(201).json({

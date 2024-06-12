@@ -1,11 +1,11 @@
 import { HttpError } from 'http-errors';
 
-export const errorHandler = (err, req, res) => {
+export const errorHandler = (err, req, res, next) => {
   if (err instanceof HttpError) {
     res.status(err.status).json({
       status: err.status,
-      message: 'Something went wrong',
-      data: { message: 'Contact not found' },
+      message: err.name,
+      data: err,
     });
     return;
   }
