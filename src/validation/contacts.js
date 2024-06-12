@@ -42,7 +42,7 @@ export const updateContactSchema = Joi.object({
     .email()
     .messages({ 'string.base': 'Email should be a string' }),
   isFavourite: Joi.boolean().messages({
-    'number.base': 'isFavourite should be a boolean type',
+    'boolean.base': 'isFavourite should be a boolean type',
   }),
   contactType: Joi.string().valid('work', 'home', 'personal').messages({
     'string.base':
