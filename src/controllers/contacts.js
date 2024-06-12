@@ -34,12 +34,6 @@ export const getAllContactsController = async (req, res) => {
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(contactId)) {
-    return res.json({
-      status: 404,
-      message: `Invalid contact ID: ${contactId}`,
-    });
-  }
   try {
     const contact = await getContactById(contactId);
 

@@ -5,6 +5,7 @@ import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { isValidId } from './middlewares/isValidId.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -13,6 +14,7 @@ export const setupServer = () => {
 
   app.use(express.json());
   app.use(cors());
+  app.use('/contacts/:contactId', isValidId);
 
   app.use(
     pino({
