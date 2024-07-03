@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import createHttpError from 'http-errors';
 import {
   getAllContacts,
@@ -10,7 +9,9 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { env } from '../utils/env.js';
 import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getAllContactsController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -62,12 +63,50 @@ export const getContactByIdController = async (req, res, next) => {
   }
 };
 
-export const createContactController = async (req, res, next) => {
-  const contact = await createContact({ ...req.body, userId: req.user._id });
+// export const createContactController = async (req, res, next) => {
+//   const photo = req.file;
+//   let photoUrl;
+//   if (photo) {
+//     if (env('ENABLE_CLOUDINARY') === 'true') {
+//       photoUrl = await saveFileToCloudinary(photo);
+//     } else {
+//       photoUrl = await saveFileToUploadDir(photo);
+//     }
+//   }
+
+//   const contact = await createContact({
+//     ...req.body,
+//     userId: req.user._id,
+//     photo: photoUrl,
+//   });
+
+//   res.status(201).json({
+//     status: 201,
+//     message: `Successfully created contact!`,
+//     data: contact,
+//   });
+// };
+
+export const createContactController = async (req, res) => {
+  const photo = req.file;
+  let photoUrl;
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const contact = await createContact({
+    ...req.body,
+    userId: req.user._id,
+    photo: photoUrl,
+  });
 
   res.status(201).json({
     status: 201,
-    message: `Successfully created contact!`,
+    message: `Successfully created a contact!`,
     data: contact,
   });
 };
@@ -91,18 +130,17 @@ export const deleteContactController = async (req, res, next) => {
 };
 
 export const patchContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-
-  const photo = req.file;
-  let photoUrl;
-  if (photo) {
-    photoUrl = await saveFileToUploadDir(photo);
-  }
-
   const { user } = req;
   if (!user) {
     next(createHttpError(401));
     return;
+  }
+  const { contactId } = req.params;
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
   }
 
   const result = await updateContact(contactId, user._id, {

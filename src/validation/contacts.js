@@ -2,11 +2,11 @@ import Joi from 'joi';
 
 export const createContactSchema = Joi.object({
   name: Joi.string().min(3).max(20).required().messages({
-    'string.base': 'Username should be a string',
-    'string.empty': 'The username cannot be empty',
-    'string.min': 'Username should have at least 3 characters',
-    'string.max': 'Username should have at most 20 characters',
-    'any.required': 'Username is required',
+    'string.base': 'Name should be a string',
+    'string.empty': 'The name cannot be empty',
+    'string.min': 'Name should have at least 3 characters',
+    'string.max': 'Name should have at most 20 characters',
+    'any.required': 'Name is required',
   }),
   phoneNumber: Joi.number().integer().required().messages({
     'number.base': 'Phone number should be a number',
