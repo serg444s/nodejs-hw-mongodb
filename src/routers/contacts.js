@@ -29,7 +29,6 @@ router.post(
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
-
 router.patch(
   '/:contactId',
   upload.single('photo'),
