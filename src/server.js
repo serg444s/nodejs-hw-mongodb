@@ -8,6 +8,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { isValidId } from './middlewares/isValidId.js';
 import { UPLOAD_DIR } from './constants/index.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -19,6 +20,9 @@ export const setupServer = () => {
   app.use('/contacts/:contactId', isValidId);
 
   app.use(cookieParser());
+
+  app.use('/uploads', express.static(UPLOAD_DIR));
+  app.use('/api-docs', swaggerDocs());
 
   app.use(
     pino({
