@@ -7,9 +7,9 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js",
-    "start": "node ./src/index.js",
     "build": "npm run build-docs",
+    "start": "node dist/index.js",
+    "dev": "nodemon ./src/index.js | pino-pretty",
     "build-docs": "redocly bundle --ext json -o docs/swagger.json",
     "preview-docs": "redocly preview-docs"
   },
