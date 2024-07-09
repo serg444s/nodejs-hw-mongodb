@@ -1,5 +1,3 @@
-#/swagger/paths/students/get.yaml
-
 tags:
   - Contacts
 summary: Get list of contacts
@@ -30,32 +28,6 @@ parameters:
       type: string
       enum: ['asc', 'desc']
       example: 'asc'
-  - in: query
-    name: minPhoneNumber
-    schema:
-      type: number
-      example: 111
-  - in: query
-    name: maxPhoneNumber
-    schema:
-      type: number
-      example: 999999
-  - in: query
-    name: minCreatedAt
-    schema:
-      type: number
-      example: 10545345
-  - in: query
-    name: maxCreatedAt
-    schema:
-      type: number
-      example: 98742452
-  - in: query
-    name: contactType
-    schema:
-      type: string
-      enum: ['work', 'home', 'personal']
-      example: personal
 responses:
   '200':
     description: Successfully found contacts!
